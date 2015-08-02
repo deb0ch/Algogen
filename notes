@@ -1,7 +1,5 @@
 
-Optimisations:
-
--> RankByDiversity: à chaque ré-évaluation, ne faire qu'ajouter à la population la distance au dernier séléctionné plutot que de recalculer la distance à tous les individus déjà séléctionnés.
+-> Faire marcher l'algo de diversité
 
 -> Dupliquer la liste au lieu de la retrier pour classer par diversité après avoir classé par rang (?)
    => Faire 3 listes
@@ -10,3 +8,15 @@ Optimisations:
    => Moui.
 
 -> Faire le _pop.erase() avec une population triée dans l'ordre inverse (moins de perte de temps à déplacer tout le tableau)
+
+-> Multi-threader l'évaluation
+
+-> Faire d'Individual une classe abstraite pour accepter toutes sortes de sujets.
+
+-> Fichier de config
+
+-> Exporter des rapports sous forme de graphes
+
+-> Faire des graphes sur des moyennes en faisant varier les paramètres
+
+-> système de plugin ?

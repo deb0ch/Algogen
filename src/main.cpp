@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 15:31:45 2014 deb0ch
-// Last update Sat Aug  1 13:55:29 2015 deb0ch
+// Last update Sun Aug  2 14:57:59 2015 deb0ch
 //
 
 #include <cstdlib>
@@ -47,7 +47,6 @@ int	main(int ac, char **av)
       pop.mutate();
       pop.eval();
       std::cout << pop << std::endl;
-      // pop.dump();
       ++gen;
     }
   std::cout << "And the winner is: " << pop.best().genom() << std::endl;

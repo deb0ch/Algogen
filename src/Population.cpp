@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:03 2014 deb0ch
-// Last update Sat Aug  1 13:54:34 2015 deb0ch
+// Last update Sun Aug  2 15:00:07 2015 deb0ch
 //
 
 #include <algorithm>
@@ -89,7 +89,8 @@ static void	rankByFitness(std::vector<Individual*>& pop)
     pop[i]->setFitnessRank(i);
 }
 
-static void	rankByDiversity(std::vector<Individual*>& pop, std::vector<Individual*> newGen)
+static void	rankByDiversity(std::vector<Individual*>& pop,
+				const std::vector<Individual*>& newGen)
 {
   for (auto it = pop.begin(); it != pop.end(); ++it)
     {
@@ -110,7 +111,7 @@ static void	rankByDiversity(std::vector<Individual*>& pop, std::vector<Individua
  * This means that not only the fitness is taken into account during
  * selection, but also the distance between the individual and the new
  * generation.
- * Here we make sure to always keep the best individual in the next gen.
+ * Here we first keep the best individual in the next gen.
  */
 void	Population::select()
 {
@@ -131,18 +132,15 @@ void	Population::select()
   		});
   for (size_t i = 0; i < g_selectionRatio * _size - 1 ; ++i)
     {
-      std::for_each(_pop.begin(), _pop.end(),
-      		    [] (Individual* in) -> void
-      		    {
-      		      in->setDiversityRank(0);
-      		    });
       rankByFitness(_pop);
       rankByDiversity(_pop, newGen);
       std::sort(_pop.begin(), _pop.end(),
       		[] (const Individual* a, const Individual* b) -> bool
       		{
-      		  return ((1 - g_diversity) * a->fitnessRank() + g_diversity * a->diversityRank()
-      			  < (1 - g_diversity) * b->fitnessRank() + g_diversity * b->diversityRank());
+      		  return ((1 - g_diversity) * a->fitnessRank()
+			  + g_diversity * a->diversityRank()
+      			  < (1 - g_diversity) * b->fitnessRank()
+			  + g_diversity * b->diversityRank());
       		});
       it = randomOrderedPick(_pop);
       newGen.push_back(*it);

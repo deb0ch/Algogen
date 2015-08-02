@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:30 2014 deb0ch
-// Last update Fri Jul 31 23:27:32 2015 deb0ch
+// Last update Sun Aug  2 14:51:15 2015 deb0ch
 //
 
 #ifndef INDIVIDUAL_H_
@@ -20,7 +20,7 @@ public:
 
   float			fitness() const { return _fitness; }
   size_t		fitnessRank() const { return _fitnessRank; }
-  size_t		diversity() const { return _diversity; }
+  float			diversity() const { return _diversity; }
   size_t		diversityRank() const { return _diversityRank; }
 
   void			setFitnessRank(size_t r) { _fitnessRank = r; }
