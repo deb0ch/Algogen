@@ -5,7 +5,7 @@
 ## Login   <chauvo_t@epitech.net>
 ##
 ## Started on  Tue Jul 28 18:40:39 2015 deb0ch
-## Last update Sat Aug  1 12:50:38 2015 deb0ch
+## Last update Mon Aug  3 12:41:59 2015 deb0ch
 ##
 
 CXX			:= clang++
@@ -34,7 +34,7 @@ TMPS			:= $(OBJS) $(OBJS:.o=.d)
 
 CXXFLAGS		+= -W -Wall -Wextra -Werror
 CXXFLAGS		+= -std=c++11
-CXXFLAGS		+= -O2
+CXXFLAGS		+= -O3
 CXXFLAGS		+= -MD
 debug: CXXFLAGS		+= -g -g3 -ggdb
 CXXFLAGS		+= -I./$(SRCDIR)

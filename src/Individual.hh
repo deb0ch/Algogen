@@ -5,13 +5,14 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:30 2014 deb0ch
-// Last update Sun Aug  2 14:51:15 2015 deb0ch
+// Last update Mon Aug  3 12:47:17 2015 deb0ch
 //
 
 #ifndef INDIVIDUAL_H_
 # define INDIVIDUAL_H_
 
 # include <iostream>
+# include "Threads.hh"
 
 class Individual
 {
@@ -27,7 +28,7 @@ public:
   void			setDiversity(float m) { _diversity = m; }
   void			setDiversityRank(size_t r) { _diversityRank = r; }
 
-  void			eval();
+  void			eval(Any);
   Individual*		mate(const Individual& mate) const;
   void			mutate();
 
@@ -46,6 +47,7 @@ private:
 
 protected:
   std::string		_genom;
+  std::string		_ref;
   float			_fitness;
   size_t		_fitnessRank;
   float			_diversity;

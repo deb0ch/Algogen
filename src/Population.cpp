@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:03 2014 deb0ch
-// Last update Sun Aug  2 15:00:07 2015 deb0ch
+// Last update Mon Aug  3 15:09:34 2015 deb0ch
 //
 
 #include <algorithm>
@@ -20,11 +20,12 @@ extern size_t	g_popSize;
 extern float	g_selectionRatio;
 extern float	g_selectionChance;
 extern float	g_diversity;
+extern int	g_nbThreads;
 
 // Public
 
 Population::Population(size_t size)
-  : _size(size), _gen(0)
+  : _size(size), _gen(0), _threadpool(g_nbThreads)
 {
   for (size_t i = 0; i < size; ++i)
     {
@@ -64,10 +65,11 @@ float	Population::avg() const
 void Population::eval()
 {
   std::for_each(_pop.begin(), _pop.end(),
-		[] (Individual* i) -> void
+		[ this ] (Individual* in) -> void
 		{
-		  i->eval();
+		  _threadpool.addTask(new Task<Individual>(in, &Individual::eval, Any()));
 		});
+  _threadpool.waitTasks();
 }
 
 static std::vector<Individual*>::iterator	randomOrderedPick(std::vector<Individual*>& pop)

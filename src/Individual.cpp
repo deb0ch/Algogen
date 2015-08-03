@@ -5,13 +5,16 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:53 2014 deb0ch
-// Last update Sat Aug  1 13:36:55 2015 deb0ch
+// Last update Mon Aug  3 17:24:43 2015 deb0ch
 //
 
 #include <iomanip>
 #include <string>
 #include "Individual.hh"
 #include "Randomizer.hh"
+#include "Threads.hh"
+
+Mutex			g_mutex;
 
 extern Randomizer	g_rand;
 extern std::string	g_ref;
@@ -25,22 +28,27 @@ extern float	g_diversity;
 
 Individual::Individual(const std::string genom)
   : _genom(genom), _fitness(0), _fitnessRank(0), _diversity(0), _diversityRank(0)
-{}
+{
+  _ref = g_ref.c_str();
+}
 
 Individual::~Individual() {}
 
-void Individual::eval()
+void Individual::eval(Any)
 {
-  size_t i = 0;
+  for (int j = 0; j < 100000; ++j)
+  {
+    size_t i = 0;
 
-  _fitness = 0;
-  while (i < g_ref.length() && i < _genom.length())
-    {
-      if (g_ref[i] == _genom[i])
-	_fitness += 1;
-      ++i;
-    }
-  _fitness /= (float)_genom.length();
+    _fitness = 0;
+    while (i < _genom.length())
+      {
+	if (_ref[i] == _genom[i])
+	  _fitness += 1;
+	++i;
+      }
+    _fitness /= (float)_genom.length();
+  }
 }
 
 Individual* Individual::mate(const Individual& mate) const

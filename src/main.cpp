@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 15:31:45 2014 deb0ch
-// Last update Sun Aug  2 14:57:59 2015 deb0ch
+// Last update Mon Aug  3 17:40:56 2015 deb0ch
 //
 
 #include <cstdlib>
@@ -24,9 +24,8 @@ int	g_mutationStep = g_legalChars.length();
 size_t	g_popSize = 200;
 float	g_selectionRatio = 0.4;
 float	g_selectionChance = 3.f / 4.f;
-float	g_diversity = 0.2f;
-
-#include <algorithm>
+float	g_diversity = 0.1f;
+int	g_nbThreads = 8;
 
 int	main(int ac, char **av)
 {
