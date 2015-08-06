@@ -1,9 +1,9 @@
-#ifndef		SAFEFIFO_H_
-# define	SAFEFIFO_H_
+#ifndef SAFEFIFO_H_
+# define SAFEFIFO_H_
 
-#include <vector>
-#include "Threads.hh"
-#include "SafeFifoException.hh"
+# include <list>
+# include "Threads.hh"
+# include "SafeFifoException.hh"
 
 template <typename T>
 class SafeFifo
@@ -19,9 +19,10 @@ public:
     _fifo.push_back(value);
   }
 
-  unsigned int	size()
+  size_t	size()
   {
     ScopedMutex p(&_mutex);
+
     return _fifo.size();
   }
 
@@ -31,10 +32,10 @@ public:
 
     if (_fifo.front() == value)
       {
-      _fifo.erase(_fifo.begin());
-      return (true);
-    }
-    return (false);
+	_fifo.erase(_fifo.begin());
+	return true;
+      }
+    return false;
   }
 
   T &getNext(void)
@@ -43,7 +44,7 @@ public:
 
     if (_fifo.empty())
       throw SafeFifoException("The fifo is empty");
-    return ((_fifo.front()));
+    return _fifo.front();
   }
 
   T &getNextPop(void)
@@ -53,16 +54,16 @@ public:
 
     if (_fifo.empty())
       throw SafeFifoException("The fifo is empty");
-    res = (_fifo.front());
-    _fifo.erase(_fifo.begin());
-    return (res);
+    res = _fifo.front();
+    _fifo.pop_front();
+    return res;
   }
 
   bool	isEmpty(void)
   {
     ScopedMutex p(&_mutex);
 
-    return (_fifo.empty());
+    return _fifo.empty();
   }
 
   void	clear(void)
@@ -73,24 +74,19 @@ public:
       _fifo.pop_back();
   }
 
-  unsigned int getSize(void)
-  {
-    return (_fifo.size());
-  }
-
   bool	pop(void)
   {
     ScopedMutex p(&_mutex);
 
     if (_fifo.empty())
-      return (false);
+      return false;
     _fifo.erase(_fifo.begin());
-    return (true);
+    return true;
   }
 
 protected:
   Mutex			_mutex;
-  std::vector<T>	_fifo;
+  std::list<T>		_fifo;
 
 private:
   SafeFifo(const SafeFifo& ref) = delete;

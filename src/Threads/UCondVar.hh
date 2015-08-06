@@ -11,7 +11,7 @@ private:
   CondVar(const CondVar &) = delete;
 
 protected:
-  pthread_cond_t	cond;
+  pthread_cond_t	_cond;
 
 public:
   CondVar();

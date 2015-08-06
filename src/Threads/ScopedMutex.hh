@@ -5,17 +5,17 @@
 
 class ScopedMutex
 {
-private :
-	IMutex *_mutex;
+public:
+  ScopedMutex(IMutex *mutex);
+  ~ScopedMutex();
 
 private:
-	ScopedMutex() = delete;
-	ScopedMutex(const ScopedMutex & other) = delete;
-	ScopedMutex &operator=(const ScopedMutex & other) = delete;
+  ScopedMutex() = delete;
+  ScopedMutex(const ScopedMutex & other) = delete;
+  ScopedMutex &operator=(const ScopedMutex & other) = delete;
 
-public:
-	ScopedMutex(IMutex *mutex);
-	~ScopedMutex();
+private :
+  IMutex	*_mutex;
 };
 
 #endif /* !SCOPEDMUTEX_H_ */

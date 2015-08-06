@@ -3,7 +3,7 @@
 #endif /* !__linux__ */
 #include <ostream>
 #include "Threads.hh"
-#include "ThreadPool.hpp"
+#include "ThreadPool.hh"
 
 Mutex	g_mutex;
 
@@ -39,37 +39,52 @@ void 	ClassTest::TestFunction2(Any arg) {
 
 void 	ClassTest::TestFunction(Any arg)
 {
-  ScopedMutex p(&g_mutex);
-  std::ostringstream strstream;
-  std::string	hey = "Hey ! Je suis le thread ";
-
-  _arg = *arg.getValue<int>();
-  strstream << hey << _arg ;
-  hey = strstream.str();
-  for (size_t i = 0; i < 1; ++i)
+  for (int i = 0; i < 1000000; ++i)
     {
-      std::cout << hey << std::endl;
+      ::strlen("BWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH !!!\n");
     }
+  // ScopedMutex p(&g_mutex);
+  // std::ostringstream strstream;
+  // std::string	hey = "Hey ! Je suis le thread ";
+
+  // _arg = *arg.getValue<int>();
+  // strstream << hey << _arg ;
+  // hey = strstream.str();
+  // for (size_t i = 0; i < 1; ++i)
+  //   {
+  //     std::cout << hey << std::endl;
+  //   }
 }
 
 int	main()
 {
   ClassTest objTest;
 
-  ThreadPool	*pool = new ThreadPool(7);
+  // ThreadPool	*pool = new ThreadPool(7);
 
-  int		toto1 = 1;
-  int		toto2 = 2;
-  int		toto3 = 3;
-  int		toto4 = 4;
+  ThreadPool tp(7);
 
-  for (int i = 0; i < 1000; ++i)
-    {
-      pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction, Any(&toto1)));
-      pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction2, Any(&toto2)));
-      pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction, Any(&toto3)));
-      pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction2, Any(&toto4)));
-    }
-  delete pool;
+  // for (int x = 0; x < 5; ++x)  // run five batches of 100 items
+  //   {
+  for (int i = 0; i < 100000; ++i)      // queue 100 work _tasks
+    tp.addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction, Any()));;
+  tp.waitTasks();
+  std::cout << "Done." << std::endl;
+  //     std::cout << tp.getProcessed() << '\n';
+  //   }
+  // return EXIT_SUCCESS;
+  // int		toto1 = 1;
+  // int		toto2 = 2;
+  // int		toto3 = 3;
+  // int		toto4 = 4;
+
+  // for (int i = 0; i < 1000; ++i)
+  //   {
+  //     pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction, Any(&toto1)));
+  //     pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction2, Any(&toto2)));
+  //     pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction, Any(&toto3)));
+  //     pool->addTask(new Task<ClassTest>(&objTest, &ClassTest::TestFunction2, Any(&toto4)));
+  //   }
+  // delete pool;
   return (0);
 }

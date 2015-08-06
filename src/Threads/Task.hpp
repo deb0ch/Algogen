@@ -2,21 +2,22 @@
 # define TASK_H_
 
 # include "ITask.hh"
+# include "Mutex.hh"
 
 template <typename T>
 class Task : public ITask
 {
 public:
   virtual void	run() { (_obj->*(_fct))(_arg); }
-  virtual void	operator()() {
-    (_obj->*(_fct))(_arg);
-  }
 
-		Task(T* obj, void (T::*fct)(Any), Any arg) : _obj(obj), _fct(fct), _arg(arg) {}
+  virtual void	operator()() { this->run(); }
+
+  Task(T* obj, void (T::*fct)(Any), Any arg)
+    : _obj(obj), _fct(fct), _arg(arg) {}
   virtual	~Task() {}
 
 private:
-		Task(const Task & other) = delete;
+  Task(const Task & other) = delete;
   Task &	operator=(const Task & other) = delete;
 
 protected:
@@ -29,9 +30,7 @@ class CTask : public ITask
 {
 public:
   virtual void		run() { (*_task)(_arg); }
-  virtual void		operator()() {
-    (*_task)(_arg);
-  }
+  virtual void		operator()() { (*_task)(_arg); }
 
   CTask(void* (*_task)(void*), void* _arg);
   virtual		~CTask() {}

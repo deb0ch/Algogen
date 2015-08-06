@@ -1,6 +1,8 @@
 #ifndef THREADPOOL_H_
 # define THREADPOOL_H_
 
+# include <atomic>
+# include <thread>
 # include <vector>
 # include "CondVar.hh"
 # include "SafeFifo.hpp"
@@ -9,7 +11,7 @@
 class ThreadPool
 {
 public:
-  ThreadPool(unsigned int nbThread);
+  ThreadPool(unsigned int nbThread = std::thread::hardware_concurrency());
   ~ThreadPool();
 
   void			addTask(ITask * task);
@@ -28,14 +30,14 @@ private:
       STOPPED
     };
 
-  eStatus				_status;
+  std::atomic<eStatus>			_status;
   CondVar				_cvTasks;
   CondVar				_cvWait;
-  int					_activeThreads;
   Mutex					_mutex;
-  Mutex					_mutexWait;
-  SafeFifo<ITask *>			_tasks;
-  std::vector<Thread< ThreadPool > *>	_pool;
+  Mutex					_mutexTasks;
+  SafeFifo<ITask*>			_tasks;
+  std::vector<Thread<ThreadPool>*>	_pool;
+  size_t				_busyThreads;
 };
 
 #endif /* !THREADPOOL_H_ */

@@ -1,5 +1,11 @@
 
--> Multi-threader l'évaluation + calcul de distance
+-> Faire le _pop.erase() avec une population triée dans l'ordre inverse (moins de perte de temps à déplacer tout le tableau)
+
+-> Dupliquer la liste au lieu de la retrier pour classer par diversité après avoir classé par rang (?)
+   => Faire 3 listes
+   => Associer un ID à chaque individu pour pouvoir virer le même des trois listes.
+   => ID = rank par fitness ?
+   => Moui.
 
 -> Faire d'Individual une classe abstraite pour accepter toutes sortes de sujets.
 
@@ -14,11 +20,3 @@
 Plus tard:
 
 -> Essayer algo de tournois
-
--> Dupliquer la liste au lieu de la retrier pour classer par diversité après avoir classé par rang (?)
-   => Faire 3 listes
-   => Associer un ID à chaque individu pour pouvoir virer le même des trois listes.
-   => ID = rank par fitness ?
-   => Moui.
-
--> Faire le _pop.erase() avec une population triée dans l'ordre inverse (moins de perte de temps à déplacer tout le tableau)

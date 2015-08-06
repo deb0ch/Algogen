@@ -10,7 +10,7 @@ template <typename T>
 class Thread : public IThread<T>
 {
 public:
-  virtual void				start(T* obj, void (T::*fct)(Any), Any arg)
+  virtual void	start(T* obj, void (T::*fct)(Any), Any arg)
   {
     _containerArg.obj = obj;
     _containerArg.fct = fct;
@@ -24,7 +24,7 @@ public:
     this->_status = IThread<T>::RUNNING;
   }
 
-  virtual void				start(T* obj, void (T::*fct)())
+  virtual void	start(T* obj, void (T::*fct)())
   {
     _container.obj = obj;
     _container.fct = fct;
@@ -37,24 +37,32 @@ public:
     this->_status = IThread<T>::RUNNING;
   }
 
-  virtual void				start(void* (*fct)(void*), void* arg)
+  virtual void	start(void* (*fct)(void*), void* arg)
   {
     if ((_ret = pthread_create(&(this->_thread), NULL, fct, arg)) != 0)
       throw ThreadException(_ret);
     this->_status = IThread<T>::RUNNING;
   }
 
-  virtual void				exit()
+  virtual void	exit()
   {
     pthread_exit(NULL);
     this->_status = IThread<T>::DEAD;
   }
 
-  virtual void				wait()
+  virtual void	wait()
   {
     if ((this->_ret = pthread_join(this->_thread, NULL)) != 0)
       throw ThreadException(_ret);
     this->_status = IThread<T>::DEAD;
+  }
+
+  static void	yield()
+  {
+    int	ret;
+
+    if ((ret = pthread_yield()) != 0)
+      throw ThreadException(ret);
   }
 
   virtual typename IThread<T>::STATUS	status() const

@@ -2,12 +2,12 @@
 #include "ScopedMutex.hh"
 
 ScopedMutex::ScopedMutex(IMutex *mutex)
+  : _mutex(mutex)
 {
-  this->_mutex = mutex;
-  this->_mutex->lock();
+  _mutex->lock();
 }
 
 ScopedMutex::~ScopedMutex()
 {
-  this->_mutex->unlock();
+  _mutex->unlock();
 }
