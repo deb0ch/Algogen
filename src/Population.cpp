@@ -5,10 +5,11 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:03 2014 deb0ch
-// Last update Mon Aug  3 15:09:34 2015 deb0ch
+// Last update Wed Aug  5 11:47:22 2015 deb0ch
 //
 
 #include <algorithm>
+#include <assert.h>
 #include "Randomizer.hh"
 #include "Population.hh"
 
@@ -85,10 +86,13 @@ static void	rankByFitness(std::vector<Individual*>& pop)
   std::sort(pop.begin(), pop.end(),
 	    [] (const Individual* a, const Individual* b) -> bool
 	    {
-	      return a->fitness() > b->fitness();
+	      return a->fitness() < b->fitness();
 	    });
   for (size_t i = 0; i < pop.size(); ++i)
-    pop[i]->setFitnessRank(i);
+    {
+      assert(pop[i]->fitness() >= 0 && pop[i]->fitness() <= 1);
+      pop[i]->setFitnessRank(i);
+    }
 }
 
 static void	rankByDiversity(std::vector<Individual*>& pop,
@@ -102,10 +106,24 @@ static void	rankByDiversity(std::vector<Individual*>& pop,
   std::sort(pop.begin(), pop.end(),
 	    [] (const Individual* a, const Individual* b) -> bool
 	    {
-	      return a->diversity() > b->diversity();
+	      return a->diversity() < b->diversity();
 	    });
   for (size_t i = 0; i < pop.size(); ++i)
     pop[i]->setDiversityRank(i);
+}
+
+static void	selectBest(std::vector<Individual*>& pop,
+			   std::vector<Individual*>& newGen)
+{
+  std::vector<Individual*>::iterator	it;
+
+  it = std::max_element(pop.begin(), pop.end(),
+			[] (const Individual* a, const Individual* b) -> bool
+			{
+			  return a->fitness() > b->fitness();
+			});
+  newGen.push_back(*it);
+  pop.erase(it);
 }
 
 /*
@@ -120,18 +138,8 @@ void	Population::select()
   std::vector<Individual*>		newGen;
   std::vector<Individual*>::iterator	it;
 
-  it = std::max_element(_pop.begin(), _pop.end(),
-			[] (const Individual* a, const Individual* b) -> bool
-			{
-			  return a->fitness() < b->fitness();
-			});
-  newGen.push_back(*it);
-  _pop.erase(it);
-  std::for_each(_pop.begin(), _pop.end(),
-  		[] (Individual* in) -> void
-  		{
-  		  in->setDiversity(0);
-  		});
+  selectBest(_pop, newGen);
+  std::for_each(_pop.begin(), _pop.end(), [] (Individual* in) -> void { in->setDiversity(0); });
   for (size_t i = 0; i < g_selectionRatio * _size - 1 ; ++i)
     {
       rankByFitness(_pop);
@@ -141,18 +149,14 @@ void	Population::select()
       		{
       		  return ((1 - g_diversity) * a->fitnessRank()
 			  + g_diversity * a->diversityRank()
-      			  < (1 - g_diversity) * b->fitnessRank()
+      			  > (1 - g_diversity) * b->fitnessRank()
 			  + g_diversity * b->diversityRank());
       		});
       it = randomOrderedPick(_pop);
       newGen.push_back(*it);
       _pop.erase(it);
     }
-  std::for_each(_pop.begin(), _pop.end(),
-  		[] (Individual* in) -> void
-  		{
-  		  delete in;
-  		});
+  std::for_each(_pop.begin(), _pop.end(), [] (Individual* in) -> void { delete in; });
   _pop.clear();
   _pop = newGen;
   newGen.clear();

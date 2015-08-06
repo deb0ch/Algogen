@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:53 2014 deb0ch
-// Last update Mon Aug  3 17:24:43 2015 deb0ch
+// Last update Thu Aug  6 19:37:02 2015 deb0ch
 //
 
 #include <iomanip>
@@ -13,8 +13,6 @@
 #include "Individual.hh"
 #include "Randomizer.hh"
 #include "Threads.hh"
-
-Mutex			g_mutex;
 
 extern Randomizer	g_rand;
 extern std::string	g_ref;
@@ -36,19 +34,16 @@ Individual::~Individual() {}
 
 void Individual::eval(Any)
 {
-  for (int j = 0; j < 100000; ++j)
-  {
-    size_t i = 0;
+  size_t i = 0;
 
-    _fitness = 0;
-    while (i < _genom.length())
-      {
-	if (_ref[i] == _genom[i])
-	  _fitness += 1;
-	++i;
-      }
-    _fitness /= (float)_genom.length();
-  }
+  _fitness = 0;
+  while (i < _genom.length())
+    {
+      if (_ref[i] == _genom[i])
+	_fitness += 1;
+      ++i;
+    }
+  _fitness /= (float)_genom.length();
 }
 
 Individual* Individual::mate(const Individual& mate) const
@@ -109,7 +104,8 @@ std::ostream&   operator<<(std::ostream &s, const Individual& p)
     << "fitnessRank = " << std::setw(20) << p.fitnessRank() << ", "
     << "diversity = " << std::setw(20) << p.diversity() << ", "
     << "diversityRank = " << std::setw(20) << p.diversityRank() << ", "
-    << "Combined rank = " << std::setw(20) << (1 - g_diversity) * p.fitnessRank() + g_diversity * p.diversityRank() << ", "
+    << "Combined rank = " << std::setw(20)
+    << (1 - g_diversity) * p.fitnessRank() + g_diversity * p.diversityRank() << ", "
     << std::endl;
   return s;
 }
