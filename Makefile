@@ -5,7 +5,7 @@
 ## Login   <chauvo_t@epitech.net>
 ##
 ## Started on  Tue Jul 28 18:40:39 2015 deb0ch
-## Last update Thu Aug  6 15:23:42 2015 deb0ch
+## Last update Tue Aug 11 11:57:48 2015 deb0ch
 ##
 
 CXX			:= clang++
@@ -80,6 +80,7 @@ $(OBJS): | $(OBJDIR)
 $(OBJDIR):
 	@printf "[\033[0;33mCompiler flags\033[0m] %s\n"
 	@echo $(CXXFLAGS)
+	@printf "[\033[0;35mGenerating folders...\033[0m] %s\n"
 	@mkdir -p $(OBJDIR)
 	@for dir in $(SUBDIRS);			\
 	do					\
@@ -93,8 +94,8 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 	@rm -rf $(OBJDIR)
-	@printf "[\033[0;35mRemoved\033[0m] %s\n" $(NAME)
-	@printf "[\033[0;35mRemoved\033[0m] %s\n" $(OBJDIR)
+	@printf "[\033[0;35mDeleted\033[0m] %s\n" $(NAME)
+	@printf "[\033[0;35mDeleted\033[0m] %s\n" $(OBJDIR)
 
 re:	fclean all
 

@@ -5,9 +5,10 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 15:31:45 2014 deb0ch
-// Last update Mon Aug  3 17:40:56 2015 deb0ch
+// Last update Sun Aug  9 23:32:43 2015 deb0ch
 //
 
+#include <csignal>
 #include <cstdlib>
 #include <err.h>
 #include <iomanip>
@@ -16,6 +17,7 @@
 #include "Randomizer.hh"
 
 Randomizer	g_rand;
+ThreadPool	g_threadPool;
 std::string	g_ref;
 std::string	g_legalChars = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ ";
 
@@ -27,10 +29,14 @@ float	g_selectionChance = 3.f / 4.f;
 float	g_diversity = 0.1f;
 int	g_nbThreads = 8;
 
+// void	dbg_exit(int);
+
 int	main(int ac, char **av)
 {
   int	gen = 0;
 
+  // if (signal(SIGINT, dbg_exit) == SIG_ERR)
+  //   errx(EXIT_FAILURE, "signal() failed for SIGINT");
   if (ac != 2)
     errx(EXIT_FAILURE, "Invalid arguments.");
   g_ref = av[1];

@@ -5,14 +5,16 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:30 2014 deb0ch
-// Last update Mon Aug  3 12:47:17 2015 deb0ch
+// Last update Fri Aug  7 12:51:56 2015 deb0ch
 //
 
 #ifndef INDIVIDUAL_H_
 # define INDIVIDUAL_H_
 
 # include <iostream>
-# include "Threads.hh"
+# include <thread>
+
+#include "Any.hpp"
 
 class Individual
 {

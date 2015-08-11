@@ -5,14 +5,15 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:53 2014 deb0ch
-// Last update Thu Aug  6 19:37:02 2015 deb0ch
+// Last update Tue Aug 11 11:58:14 2015 deb0ch
 //
 
 #include <iomanip>
 #include <string>
+
+#include <Any.hpp>
 #include "Individual.hh"
 #include "Randomizer.hh"
-#include "Threads.hh"
 
 extern Randomizer	g_rand;
 extern std::string	g_ref;
@@ -25,7 +26,11 @@ extern float	g_selectionRatio;
 extern float	g_diversity;
 
 Individual::Individual(const std::string genom)
-  : _genom(genom), _fitness(0), _fitnessRank(0), _diversity(0), _diversityRank(0)
+  : _genom(genom),
+    _fitness(0),
+    _fitnessRank(0),
+    _diversity(0),
+    _diversityRank(0)
 {
   _ref = g_ref.c_str();
 }

@@ -5,15 +5,18 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:03 2014 deb0ch
-// Last update Wed Aug  5 11:47:22 2015 deb0ch
+// Last update Sun Aug  9 23:36:28 2015 deb0ch
 //
 
 #include <algorithm>
 #include <assert.h>
-#include "Randomizer.hh"
-#include "Population.hh"
 
-extern Randomizer g_rand;
+#include "Population.hh"
+#include "Randomizer.hh"
+#include "ThreadPool.hh"
+
+extern Randomizer	g_rand;
+extern ThreadPool	g_threadPool;
 
 extern float	g_mutationRate;
 extern int	g_mutationStep;
@@ -26,7 +29,7 @@ extern int	g_nbThreads;
 // Public
 
 Population::Population(size_t size)
-  : _size(size), _gen(0), _threadpool(g_nbThreads)
+  : _size(size), _gen(0)
 {
   for (size_t i = 0; i < size; ++i)
     {
@@ -68,9 +71,9 @@ void Population::eval()
   std::for_each(_pop.begin(), _pop.end(),
 		[ this ] (Individual* in) -> void
 		{
-		  _threadpool.addTask(new Task<Individual>(in, &Individual::eval, Any()));
+		  g_threadPool.addTask(new Task<Individual>(in, &Individual::eval, Any()));
 		});
-  _threadpool.waitTasks();
+  g_threadPool.waitTasks();
 }
 
 static std::vector<Individual*>::iterator	randomOrderedPick(std::vector<Individual*>& pop)

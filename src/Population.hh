@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:17 2014 deb0ch
-// Last update Mon Aug  3 17:41:46 2015 deb0ch
+// Last update Sat Aug  8 03:19:55 2015 deb0ch
 //
 
 #ifndef POPULATION_H_
@@ -14,8 +14,8 @@
 # include <iostream>
 # include <utility>
 # include <vector>
+
 # include "Individual.hh"
-# include "Threads.hh"
 # include "ThreadPool.hh"
 
 class Population
@@ -46,7 +46,6 @@ public:
   std::vector<Individual*>	_pop;
   size_t			_size;
   size_t			_gen;
-  ThreadPool			_threadpool;
 };
 
 std::ostream&	operator<<(std::ostream &s, const Population& p);
