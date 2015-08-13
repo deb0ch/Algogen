@@ -5,26 +5,20 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:03 2014 deb0ch
-// Last update Sun Aug  9 23:36:28 2015 deb0ch
+// Last update Thu Aug 13 16:09:45 2015 deb0ch
 //
 
 #include <algorithm>
 #include <assert.h>
 
+#include "ConfigReader.hh"
 #include "Population.hh"
 #include "Randomizer.hh"
 #include "ThreadPool.hh"
 
+extern ConfigReader	g_config;
 extern Randomizer	g_rand;
 extern ThreadPool	g_threadPool;
-
-extern float	g_mutationRate;
-extern int	g_mutationStep;
-extern size_t	g_popSize;
-extern float	g_selectionRatio;
-extern float	g_selectionChance;
-extern float	g_diversity;
-extern int	g_nbThreads;
 
 // Public
 
@@ -79,7 +73,7 @@ void Population::eval()
 static std::vector<Individual*>::iterator	randomOrderedPick(std::vector<Individual*>& pop)
 {
   for (std::vector<Individual*>::iterator it = pop.begin(); it != pop.end(); ++it)
-    if (g_rand.proba(g_selectionChance))
+    if (g_rand.proba(g_config.selectionChance()))
       return it;
   return pop.end();
 }
@@ -143,17 +137,17 @@ void	Population::select()
 
   selectBest(_pop, newGen);
   std::for_each(_pop.begin(), _pop.end(), [] (Individual* in) -> void { in->setDiversity(0); });
-  for (size_t i = 0; i < g_selectionRatio * _size - 1 ; ++i)
+  for (size_t i = 0; i < g_config.selectionRatio() * _size - 1 ; ++i)
     {
       rankByFitness(_pop);
       rankByDiversity(_pop, newGen);
       std::sort(_pop.begin(), _pop.end(),
       		[] (const Individual* a, const Individual* b) -> bool
       		{
-      		  return ((1 - g_diversity) * a->fitnessRank()
-			  + g_diversity * a->diversityRank()
-      			  > (1 - g_diversity) * b->fitnessRank()
-			  + g_diversity * b->diversityRank());
+      		  return ((1 - g_config.diversity()) * a->fitnessRank()
+			  + g_config.diversity() * a->diversityRank()
+      			  > (1 - g_config.diversity()) * b->fitnessRank()
+			  + g_config.diversity() * b->diversityRank());
       		});
       it = randomOrderedPick(_pop);
       newGen.push_back(*it);

@@ -5,25 +5,22 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:38:53 2014 deb0ch
-// Last update Tue Aug 11 11:58:14 2015 deb0ch
+// Last update Thu Aug 13 16:08:59 2015 deb0ch
 //
 
 #include <iomanip>
 #include <string>
 
 #include <Any.hpp>
+
+#include "ConfigReader.hh"
 #include "Individual.hh"
 #include "Randomizer.hh"
 
+extern ConfigReader	g_config;
 extern Randomizer	g_rand;
 extern std::string	g_ref;
 extern std::string	g_legalChars;
-
-extern float	g_mutationRate;
-extern int	g_mutationStep;
-extern size_t	g_popSize;
-extern float	g_selectionRatio;
-extern float	g_diversity;
 
 Individual::Individual(const std::string genom)
   : _genom(genom),
@@ -66,11 +63,12 @@ void Individual::mutate()
 {
   for (size_t i = 0; i < _genom.size(); ++i)
     {
-      if (g_rand.proba(g_mutationRate))
+      if (g_rand.proba(g_config.mutationRate()))
 	{
 	  int g = g_legalChars.find(_genom[i]);
 
-	  _genom[i] = g_legalChars[(g + g_rand.integer(-g_mutationStep, g_mutationStep))
+	  _genom[i] = g_legalChars[(g + g_rand.integer(-g_config.mutationStep(),
+						       g_config.mutationStep()))
 				   % g_legalChars.length()];
 	}
     }
@@ -110,7 +108,8 @@ std::ostream&   operator<<(std::ostream &s, const Individual& p)
     << "diversity = " << std::setw(20) << p.diversity() << ", "
     << "diversityRank = " << std::setw(20) << p.diversityRank() << ", "
     << "Combined rank = " << std::setw(20)
-    << (1 - g_diversity) * p.fitnessRank() + g_diversity * p.diversityRank() << ", "
+    << (1 - g_config.diversity()) * p.fitnessRank()
+    + g_config.diversity() * p.diversityRank() << ", "
     << std::endl;
   return s;
 }
