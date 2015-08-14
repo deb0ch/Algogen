@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:17 2014 deb0ch
-// Last update Sat Aug  8 03:19:55 2015 deb0ch
+// Last update Fri Aug 14 02:48:55 2015 deb0ch
 //
 
 #ifndef POPULATION_H_
@@ -21,17 +21,17 @@
 class Population
 {
 public:
-  size_t			generation() const { return _gen; };
-  size_t			size() const { return _pop.size(); };
-  const Individual&		best() const;
-  float				avg() const;
+  size_t		generation() const { return _gen; };
+  size_t		size() const { return _pop.size(); };
+  const Individual&	best() const;
+  float			avg() const;
 
-  void				eval();
-  void				select();
-  void				mate();
-  void				mutate();
+  void			eval();
+  void			select();
+  void			mate();
+  void			mutate();
 
-  void				dump() const;
+  void			dump() const;
 
 public:
   Population(size_t size);
@@ -41,6 +41,10 @@ private:
   Population();
   Population(const Population &);
   Population &operator=(const Population &);
+
+private:
+  void					selectRankSpace();
+  void					selectTournament();
 
 public:
   std::vector<Individual*>	_pop;

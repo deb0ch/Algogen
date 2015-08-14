@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Aug 13 11:58:53 2015 deb0ch
-// Last update Thu Aug 13 13:29:08 2015 deb0ch
+// Last update Fri Aug 14 16:49:37 2015 deb0ch
 //
 
 #ifndef CONFIGREADER_H_
@@ -16,13 +16,15 @@
 class ConfigReader
 {
 public:
-  float		mutationRate() const	{ return _mutationRate; };
-  int		mutationStep() const	{ return _mutationStep;};
-  size_t	popSize() const		{ return _popSize; };
-  float		selectionRatio() const	{ return _selectionRatio; };
-  float		selectionChance() const	{ return _selectionChance; };
-  float		diversity() const	{ return _diversity; };
-  int		nbThreads() const	{ return _nbThreads; };
+  int		nbThreads() const	{ return _nbThreads; }
+  size_t	popSize() const		{ return _popSize; }
+  float		selectionRatio() const	{ return _selectionRatio; }
+  float		selectionChance() const	{ return _selectionChance; }
+  float		mutationRate() const	{ return _mutationRate; }
+  int		mutationStep() const	{ return _mutationStep; }
+  int		algorithm() const	{ return _algorithm; }
+  float		diversity() const	{ return _diversity; }
+  int		poolsCount() const	{ return _poolsCount; }
 
 public:
   ConfigReader();
@@ -37,13 +39,15 @@ private:
   void		processLine(const std::string& line, int n);
 
 private:
-  float		_mutationRate;
-  int		_mutationStep;
+  int		_nbThreads;
   size_t	_popSize;
   float		_selectionRatio;
   float		_selectionChance;
+  float		_mutationRate;
+  int		_mutationStep;
+  int		_algorithm;
   float		_diversity;
-  int		_nbThreads;
+  int		_poolsCount;
 };
 
 #endif /* !CONFIGREADER_H_ */

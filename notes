@@ -1,12 +1,33 @@
 
--> Fichier de config
+-> Algo de tournois
 
 -> Exporter des rapports sous forme de graphes
 
 -> Faire des graphes sur des moyennes en faisant varier les paramètres
 
--> système de plugin ?
+-> système de plugin pour différents types de génomes ?
 
-Plus tard:
+-> Améliorer threadpool pour éliminer l'usage de Any() (par ex, utiliser des templates variadiques ?)
 
--> Essayer algo de tournois
+Tournament instant notes:
+
+selectTournament()
+	poolsCount = diversity * (selectionRatio * popSize)
+	create poolsCount pools
+        while _pop is not empty
+       	     for each pool:
+    	     	 push random individual from _pop
+	     ;
+        ;
+	for each pool
+	    rank pool by fitness
+	;
+	for each pool in pools
+	    push best from pool into nextGen
+	;
+	i = 0
+	while nextGen count < selectionRatio * popSize
+	      push randomOrderedPick from pool[i] into nextGen
+	      i = i + 1
+	;
+;
