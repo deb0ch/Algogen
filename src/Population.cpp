@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 16:03:03 2014 deb0ch
-// Last update Fri Aug 14 20:50:35 2015 deb0ch
+// Last update Sat Aug 15 19:55:45 2015 deb0ch
 //
 
 #include <algorithm>
@@ -128,17 +128,17 @@ static std::vector<Individual*>::iterator randomOrderedPick(std::vector<Individu
 
 // Rank-Space method:
 
-static void	rankByFitness(std::vector<Individual*>& pop)
+static void	rankByFitness(std::vector<Individual*>* pop)
 {
-  std::sort(pop.begin(), pop.end(),
+  std::sort((*pop).begin(), (*pop).end(),
 	    [] (const Individual* a, const Individual* b) -> bool
 	    {
 	      return a->fitness() > b->fitness();
 	    });
-  for (size_t i = 0; i < pop.size(); ++i)
+  for (size_t i = 0; i < (*pop).size(); ++i)
     {
-      assert(pop.at(i)->fitness() >= 0 && pop.at(i)->fitness() <= 1);
-      pop.at(i)->setFitnessRank(i);
+      assert((*pop).at(i)->fitness() >= 0 && (*pop).at(i)->fitness() <= 1);
+      (*pop).at(i)->setFitnessRank(i);
     }
 }
 
@@ -189,7 +189,7 @@ void	Population::selectRankSpace()
   std::for_each(_pop.begin(), _pop.end(), [] (Individual* in) -> void { in->setDiversity(0); });
   for (size_t i = 0; i < g_config.selectionRatio() * _size - 1 ; ++i)
     {
-      rankByFitness(_pop);
+      rankByFitness(&_pop);
       rankByDiversity(_pop, newGen);
       std::sort(_pop.begin(), _pop.end(),
       		[] (const Individual* a, const Individual* b) -> bool
@@ -229,8 +229,8 @@ static void	fillPools(std::vector<Individual*>& pop,
     }
 }
 
-void selectFromPools(std::vector<std::vector<Individual*>*>& pools,
-		     std::vector<Individual*>& newGen)
+static void selectFromPools(std::vector<std::vector<Individual*>*>& pools,
+			    std::vector<Individual*>& newGen)
 {
   auto itPools = pools.begin();
 
@@ -253,7 +253,7 @@ void Population::selectTournament()
 
   selectBest(_pop, newGen);
   std::for_each(pools.begin(), pools.end(),
-		[] (std::vector<Individual*>*& pool)
+		[] (std::vector<Individual*>*& pool) -> void
 		{
 		  pool = new std::vector<Individual*>;
 		});
@@ -261,8 +261,11 @@ void Population::selectTournament()
   std::for_each(pools.begin(), pools.end(),
 		[] (std::vector<Individual*>*& pool)
 		{
-		  rankByFitness(*pool);
+		  g_threadPool.addTask(new CTask(reinterpret_cast<void* (*)(void*)>
+						 (&rankByFitness),
+						 pool));
 		});
+  g_threadPool.waitTasks();
   selectFromPools(pools, newGen);
   std::for_each(pools.begin(), pools.end(),
   		[] (std::vector<Individual*>* pool) -> void

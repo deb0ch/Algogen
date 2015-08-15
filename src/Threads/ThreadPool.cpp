@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Wed Aug  5 19:18:27 2015 deb0ch
-// Last update Mon Aug 10 22:57:54 2015 deb0ch
+// Last update Sat Aug 15 15:34:54 2015 deb0ch
 //
 
 #include "ThreadPool.hh"
@@ -16,6 +16,7 @@ ThreadPool::ThreadPool(unsigned int nbThread)
   _pool.reserve(nbThread);
   for (unsigned int i = 0; i < nbThread; ++i)
     _pool.emplace_back(std::bind(&ThreadPool::runThread, this));
+  std::cerr << "threads: " << _pool.size() << std::endl;
 }
 
 ThreadPool::~ThreadPool()

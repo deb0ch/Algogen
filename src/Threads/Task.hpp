@@ -1,3 +1,13 @@
+//
+// Task.hpp for thread_utils
+//
+// Made by deb0ch
+// Login   <chauvo_t@epitech.net>
+//
+// Started on  Sat Aug 15 15:08:29 2015 deb0ch
+// Last update Sat Aug 15 15:08:38 2015 deb0ch
+//
+
 #ifndef TASK_H_
 # define TASK_H_
 
@@ -13,7 +23,8 @@ public:
   virtual void	operator()() { this->run(); }
 
   Task(T* obj, void (T::*fct)(Any), Any arg)
-    : _obj(obj), _fct(fct), _arg(arg) {}
+    : _obj(obj), _fct(fct), _arg(arg)
+  {}
   virtual	~Task() {}
 
 private:
@@ -32,7 +43,9 @@ public:
   virtual void		run() { (*_task)(_arg); }
   virtual void		operator()() { (*_task)(_arg); }
 
-  CTask(void* (*_task)(void*), void* _arg);
+  CTask(void* (*task)(void*), void* arg)
+    : _task(task), _arg(arg)
+  {}
   virtual		~CTask() {}
 
 private:
