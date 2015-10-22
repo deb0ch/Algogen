@@ -5,7 +5,7 @@
 // Login   <chauvo_t@epitech.net>
 //
 // Started on  Thu Nov  6 15:31:45 2014 deb0ch
-// Last update Sat Aug 15 15:37:28 2015 deb0ch
+// Last update Thu Oct 22 14:22:00 2015 chauvo_t
 //
 
 #include <csignal>
@@ -39,14 +39,10 @@ int	main(int ac, char **av)
   std::cout << std::setprecision(9) << std::fixed;
   while (pop.best().genom() != g_ref)
     {
-      std::cout << "Selecting..." << std::endl;
       pop.select();
-      std::cout << "Selected." << std::endl;
       pop.mate();
       pop.mutate();
-      std::cout << "Evaluating..." << std::endl;
       pop.eval();
-      std::cout << "Evaluated." << std::endl;
       std::cout << pop << std::endl;
       ++gen;
     }
