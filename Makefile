@@ -5,7 +5,7 @@
 ## Login   <chauvo_t@epitech.net>
 ##
 ## Started on  Tue Jul 28 18:40:39 2015 deb0ch
-## Last update Tue Aug 11 11:57:48 2015 deb0ch
+## Last update Sat Oct 24 14:56:53 2015 chauvo_t
 ##
 
 CXX			:= clang++
@@ -38,8 +38,10 @@ CXXFLAGS		+= -O3
 CXXFLAGS		+= -MD
 debug: CXXFLAGS		+= -g -g3 -ggdb
 CXXFLAGS		+= -I./$(SRCDIR)
+CXXFLAGS		+= -I./lib/gnuplot-iostream
 CXXFLAGS		+= $(addprefix -I./$(SRCDIR)/, $(SUBDIRS))
 
+LDFLAGS			+= -lboost_iostreams -lboost_system -lboost_filesystem 
 debug: LDFLAGS		+= -g -g3 -ggdb
 
 NAME			:= hello_geno

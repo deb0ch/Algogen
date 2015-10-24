@@ -5,7 +5,7 @@
 ## Login   <chauvo_t@epitech.net>
 ##
 ## Started on  Tue Jul 28 18:46:20 2015 deb0ch
-## Last update Sun Aug  2 15:22:27 2015 deb0ch
+## Last update Sat Oct 24 14:46:32 2015 chauvo_t
 ##
 
 SRCS		:=	Individual.cpp  	\
